@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 const Display = (props) => <div>{props.value}</div>
-const DisplayMostVotes = (props) => <div>{props.value}</div>
 
 const Header = (props) => <h1>{props.value}</h1>
 
@@ -33,7 +32,6 @@ const App = () => {
     const index = Math.floor((Math.random() * anecdotes.length))
     setSelected(index)
   }
-
 
   const hanldeVote = () => {
     setVotes({ ...votes, [selected]: votes[selected] + 1 })
