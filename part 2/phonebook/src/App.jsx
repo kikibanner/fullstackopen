@@ -4,6 +4,7 @@ import phonebookService from './services/phonebook'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 
 
 const App = () => {
@@ -11,6 +12,28 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterValue, setFilterValue] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState(null)
+  const [notificationClassName, setNotificationClassName] = useState(null)
+
+  const notificationAddScucess = (message) => {
+    setNotificationMessage(message)
+    setNotificationClassName('success')
+
+    setTimeout(() => {
+      setNotificationClassName(null)
+      setNotificationMessage(null)
+    }, 5000)
+  }
+
+  const notificationError = (message) => {
+    setNotificationMessage(message)
+    setNotificationClassName('error')
+
+    setTimeout(() => {
+      setNotificationClassName(null)
+      setNotificationMessage(null)
+    }, 5000)
+  }
 
   useEffect(() => {
     phonebookService
@@ -51,6 +74,7 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+          notificationAddScucess(`Added ${newName}`)
         })
     }
 
@@ -58,10 +82,15 @@ const App = () => {
 
   const confirmDeletion = (person) => {
     if (window.confirm(`Delete ${person.name} ?`)) {
-      phonebookService.remove(person.id)
+      phonebookService
+        .remove(person.id)
         .then(deletedPerson => {
           setPersons(persons.filter(p => p.id !== deletedPerson.id))
-          window.alert(``)
+          window.alert(`${person.name} deleted Successfully`)
+        })
+        .catch(error => {
+          notificationError(`Information of ${person.name} has already deleted from server`)
+          setPersons(persons.filter(p => p.id !== person.id))
         })
     }
   }
@@ -82,6 +111,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage} className={notificationClassName} />
       <Filter filterValue={filterValue} setFilterValue={setFilterValue} />
       <h2>add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
