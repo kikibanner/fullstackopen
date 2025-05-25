@@ -6,10 +6,10 @@ import Footer from './components/Footer'
 import noteService from './services/notes'
 
 const App = () => {
-  const [notes, setNotes] = useState([])
+  const [notes, setNotes] = useState(null)
   const [newNote, setNewNote] = useState('a new note...')
   const [showAll, setShowAll] = useState(true)
-  const [errorMessage, setErrorMessage] = useState('some error happened...')
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     noteService
@@ -28,6 +28,7 @@ const App = () => {
         setNotes(notes.map(note => note.id === id ? returnedNote : note))
       })
       .catch(error => {
+        console.log(error)
         setErrorMessage(`Note '${note.content}' was already removed from the server`)
         setTimeout(() => {
           setErrorMessage(null)
@@ -61,6 +62,11 @@ const App = () => {
     ? notes
     : notes.filter(note => note.important === true)
 
+  // if no notes
+  if (!notes) {
+    return null
+  }
+
   return (
     <div>
       <h1>Notes</h1>
@@ -92,3 +98,53 @@ const App = () => {
 }
 
 export default App
+
+
+
+
+
+// import { useState, useEffect } from 'react'
+// import axios from 'axios'
+
+// const App = () => {
+//   const [value, setValue] = useState('')
+//   const [rates, setRates] = useState({})
+//   const [currency, setCurrency] = useState(null)
+
+//   useEffect(() => {
+//     console.log('effect run, currency is now', currency)
+
+//     // skip if currency is not defined
+//     if (currency) {
+//       console.log('fetching exchange rates...')
+//       axios
+//         .get(`https://open.er-api.com/v6/latest/${currency}`)
+//         .then(response => {
+//           setRates(response.data.rates)
+//         })
+//     }
+//   }, [currency])
+
+//   const handleChange = (event) => {
+//     setValue(event.target.value)
+//   }
+
+//   const onSearch = (event) => {
+//     event.preventDefault()
+//     setCurrency(value)
+//   }
+
+//   return (
+//     <div>
+//       <form onSubmit={onSearch}>
+//         currency: <input value={value} onChange={handleChange} />
+//         <button type="submit">exchange rate</button>
+//       </form>
+//       <pre>
+//         {JSON.stringify(rates, null, 2)}
+//       </pre>
+//     </div>
+//   )
+// }
+
+// export default App

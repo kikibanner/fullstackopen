@@ -89,6 +89,7 @@ const App = () => {
           window.alert(`${person.name} deleted Successfully`)
         })
         .catch(error => {
+          console.log(error)
           notificationError(`Information of ${person.name} has already deleted from server`)
           setPersons(persons.filter(p => p.id !== person.id))
         })
