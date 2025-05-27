@@ -4,8 +4,6 @@ import FindCountries from './components/FindCountries'
 
 import countriesService from './services/countries'
 
-
-
 const App = () => {
   const [countries, setCountries] = useState([])
   const [searchCountry, setSearchCountry] = useState('')
@@ -19,13 +17,10 @@ const App = () => {
       })
   }, [])
 
-
   const countriesToShow = countries.filter(country => {
     // ekuivalen dengan str.contains()
     return country.name.common.toLowerCase().includes(searchCountry.toLocaleLowerCase())
   })
-
-
 
   const handleCountryChange = (event) => {
     console.log(event.target.value)
