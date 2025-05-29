@@ -4,7 +4,10 @@ const app = express()
 
 app.use(express.json())
 
+// morgan for logging
+// ngambil request yang di-JSON.stringify(), lalu dimasukin sebagai token 'body'
 morgan.token('body', (req) => JSON.stringify(req.body))
+// memanggil token 'body', format sebelum ':body' ini basically berasal dari morgan('tiny)
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 app.use(morgan('tiny'))
