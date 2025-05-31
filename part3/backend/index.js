@@ -2,6 +2,9 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 
+// manggill prod frontent yang telah di buat di direktori 'dist' (dikopi dari frontent yang telah di npm run build)
+app.use(express.static('dist'))
+
 app.use(cors())
 
 let notes = [
