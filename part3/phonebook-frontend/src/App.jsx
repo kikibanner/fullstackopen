@@ -84,8 +84,8 @@ const App = () => {
     if (window.confirm(`Delete ${person.name} ?`)) {
       phonebookService
         .remove(person.id)
-        .then(deletedPerson => {
-          setPersons(persons.filter(p => p.id !== deletedPerson.id))
+        .then(() => {
+          setPersons(persons.filter(p => p.id !== person.id))
           window.alert(`${person.name} deleted Successfully`)
         })
         .catch(error => {
