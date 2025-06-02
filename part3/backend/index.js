@@ -1,23 +1,10 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 
 // ==== MONGODB Config ⬇️
-
-const mongoose = require('mongoose')
-
-// Do not save the password to github
-const password = process.argv[2]
-const url = `mongodb+srv://fullstack:${password}@cluster0.4cvuwjq.mongodb.net/noteApp?retryWrites=true&w=majority&appName=Cluster0Cluster0`
-
-mongoose.set('strictQuery', false)
-mongoose.connect(url)
-
-const noteSchema = new mongoose.Schema({
-    content: String,
-    important: Boolean,
-})
-
-const Note = mongoose.model('Note', noteSchema)
+const Note = require('./models/note')
+// const url = `mongodb+srv://fullstack:${password}@cluster0.4cvuwjq.mongodb.net/noteApp?retryWrites=true&w=majority&appName=Cluster0Cluster0`
 
 // ==== MONGODB Config ⬆️
 
@@ -93,7 +80,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint)
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
