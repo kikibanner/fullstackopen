@@ -51,20 +51,17 @@ app.post('/api/notes', (request, response) => {
     const body = request.body
 
     if (!body.content) {
-        return response.status(400).json({
-            error: 'content missing',
-        })
+        return response.status(400).json({ error: 'content missing' })
     }
 
-    const note = {
+    const note = new Note({
         content: body.content,
         important: body.important || false,
-        id: generateId(),
-    }
+    })
 
-    notes = notes.concat(note)
-
-    response.json(note)
+    note.save().then(savedNote => {
+        response.json(savedNote)
+    })
 })
 
 app.delete('/api/notes/:id', (request, response) => {
