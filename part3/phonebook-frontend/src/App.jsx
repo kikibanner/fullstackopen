@@ -54,6 +54,14 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
+    if (!newName) {
+      window.alert('Name is required!')
+      return
+    }
+    if (!newNumber) {
+      window.alert('Number is required!')
+      return
+    }
     const newPerson = {
       name: newName,
       number: newNumber
