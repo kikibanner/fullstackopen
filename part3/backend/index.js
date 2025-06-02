@@ -4,8 +4,6 @@ const app = express()
 
 // ==== MONGODB Config ⬇️
 const Note = require('./models/note')
-// const url = `mongodb+srv://fullstack:${password}@cluster0.4cvuwjq.mongodb.net/noteApp?retryWrites=true&w=majority&appName=Cluster0Cluster0`
-
 // ==== MONGODB Config ⬆️
 
 const requestLogger = (request, response, next) => {

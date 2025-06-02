@@ -1,7 +1,12 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
 // const cors = require('cors')
+
+// ==== MONGODB Config ⬇️
+const Person = require('./models/person')
+// ==== MONGODB Config ⬆️
 
 app.use(express.static('dist'))
 
@@ -48,7 +53,9 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-    response.json(persons).end()
+    Person.find({}).then(notes => {
+        response.json(notes)
+    })
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -91,15 +98,14 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
-    const person = {
+    const person = new Person({
         name: body.name,
         number: body.number,
-        id: generateId()
-    }
+    })
 
-    persons = persons.concat(person)
-
-    response.json(person)
+    person.save().then(savedPerson => {
+        response.json(savedPerson)
+    })
 })
 
 app.put('/api/persons/:id', (request, response) => {
