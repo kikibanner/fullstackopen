@@ -9,7 +9,7 @@
     "build:ui": "rm -rf dist && cd ../phonebook-frontend && npm run build && cp -r dist ../phonebook-backend",
     "build:ui-shx": "shx rm -rf dist && cd ../phonebook-frontend && npm run build && shx cp -r dist ../phonebook-backend",
     "deploy:full": "npm run build:ui && git add . && git commit -m phonebook-uibuild && git push",
-    "deploy:full-shx": "npm run build:ui-shx && git add . && git commit -m phonebook-uibuild && git push"
+    "deploy:full-shx": "npm run build:ui-shx && git add . && git commit -m exercises_3_19__3_21 && git push"
   },
   "author": "Rifki Fadillah Akbar",
   "license": "MIT",
