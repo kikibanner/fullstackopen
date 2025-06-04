@@ -109,20 +109,44 @@ app.post('/api/persons', (request, response) => {
     })
 })
 
-app.put('/api/persons/:id', (request, response) => {
-    const id = request.params.id
-    const body = request.body
+app.put('/api/persons/:id', (request, response, next) => {
+    const { name, number } = request.body
 
-    const person = persons.find(p => p.id === id)
-    if (!person) {
-        return response.status(404).json({ error: 'person not found' })
+    Person.findById(request.params.id)
+        .then(person => {
+            if (!person) {
+                return response.status(404).end()
+            }
+
+            person.name = name
+            person.number = number
+
+            return person.save().then(updatedPerson => {
+                response.json(updatedPerson)
+            })
+        })
+        .catch(error => next(error))
+})
+
+// Error Handling Middlewares
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+
+// error handler dari express 
+const errorHandler = (error, request, response, next) => {
+    console.log(error.message)
+
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
     }
 
-    const updatedPerson = { ...person, number: body.number }
-    persons = persons.map(p => p.id === id ? updatedPerson : p)
+    next(error)
+}
 
-    response.json(updatedPerson)
-})
 
 const PORT = process.env.PORT
 app.listen(PORT)
