@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 
-// MONGODB Config 
+// MONGODB Config
 const Note = require('./models/note')
 
 const requestLogger = (request, response, next) => {
@@ -101,7 +101,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint)
 
-// error handler dari express 
+// error handler dari express
 const errorHandler = (error, request, response, next) => {
     console.log(error.message)
 

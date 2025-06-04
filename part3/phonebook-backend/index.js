@@ -22,12 +22,12 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
 
 app.use(morgan('tiny'))
 
-app.get('/info', (request, response) => {
-    response.send(`
-        <p>Phonebook has info for ${persons.length} people</p>
-        <p>${new Date()}</p>
-    `)
-})
+// app.get('/info', (request, response) => {
+//     response.send(`
+//         <p>Phonebook has info for ${persons.length} people</p>
+//         <p>${new Date()}</p>
+//     `)
+// })
 
 app.get('/api/persons', (request, response) => {
     Person.find({}).then(notes => {
@@ -47,17 +47,18 @@ app.get('/api/persons/:id', (request, response, next) => {
         .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndDelete(request.params.id)
         .then(result => {
+            console.log(result)
             response.status(204).end()
         })
         .catch(error => next(error))
 })
 
-const generateId = () => {
-    return String(Math.floor(Math.random() * 1_000_000_000))
-}
+// const generateId = () => {
+//     return String(Math.floor(Math.random() * 1_000_000_000))
+// }
 
 // const searchDuplicate = (name) => {
 //     return persons.filter(person => person.name == name).length
@@ -72,7 +73,7 @@ app.post('/api/persons', (request, response, next) => {
 
     if ((!body.name) || (!body.number)) {
         return response.status(400).json({
-            error: "field missing"
+            error: 'field missing'
         })
     }
 
@@ -91,7 +92,7 @@ app.post('/api/persons', (request, response, next) => {
         .then(isDuplicate => {
             if (isDuplicate) {
                 return response.status(400).json({
-                    error: "name must be unique"
+                    error: 'name must be unique'
                 })
             }
 
@@ -136,7 +137,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint)
 
-// error handler dari express 
+// error handler dari express
 const errorHandler = (error, request, response, next) => {
     console.log(error.message)
 
