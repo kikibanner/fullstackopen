@@ -10,12 +10,20 @@ const Note = require('../models/note')
 const api = supertest(app)
 
 beforeEach(async () => {
-    await Note.deleteMany({})
+    // pakai for loop
 
-    const noteObject = helper.initialNotes
-        .map(note => new Note(note))
-    const promiseArray = noteObject.map(note => note.save())
-    await Promise.all(promiseArray)
+    // await Note.deleteMany({})
+    // for (let note of helper.initialNotes) {
+    //     let noteObject = new Note(note)
+    //     await noteObject.save()
+    // }
+
+
+    // pakai bawaan mongoose
+
+    await Note.deleteMany({})
+    await Note.insertMany(helper.initialNotes)
+
 })
 
 test('notes are returned as json', async () => {
