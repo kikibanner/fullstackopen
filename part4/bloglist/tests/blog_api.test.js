@@ -46,6 +46,11 @@ test('creating a valid a blog post through HTTP POST, the total blog post increa
 
     const blogsAtEnd = await helper.blogsInDb()
     assert.strictEqual(blogsAtEnd.length, helper.initaialBlogs.length + 1)
+
+    const savedBlog = blogsAtEnd.find(blog => blog.title === newBlog.title)
+    assert.strictEqual(savedBlog.author, newBlog.author)
+    assert.strictEqual(savedBlog.url, newBlog.url)
+    assert.strictEqual(savedBlog.likes, newBlog.likes)
 })
 
 test('if the field \'likes\' is missing, it will be defaulted as 0', async () => {
