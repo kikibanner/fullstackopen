@@ -78,6 +78,35 @@ test('if the field \'title\' or \'url\' are missing, it will be 400 Bad Request'
         .expect(400)
 })
 
+test('testing deletion', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    const titles = blogsAtEnd.map(b => b.title)
+    assert(!titles.includes(blogToDelete.titles))
+
+    assert.strictEqual(blogsAtEnd.length, helper.initaialBlogs.length - 1)
+})
+
+test('testing likes update', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    const newLike = 1000
+
+    blogToUpdate.like = newLike
+
+    await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send(blogToUpdate)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+})
+
 after(async () => {
     await mongoose.connection.close()
 })
