@@ -24,7 +24,7 @@ mongoose
 // app.use(express.static('dist'))
 app.use(express.json())
 app.use(middleware.requestLogger)
-
+// Urutannya penting! define dulu middleware tokenextractor, baru ke route blog
 app.use(middleware.tokenExtractor)
 
 app.use('/api/blogs', blogsRouter)
