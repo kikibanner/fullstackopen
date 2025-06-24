@@ -1,3 +1,4 @@
+// done for Exercise 4.18: Blog List Expansion, step 6 and 4.19: Blog List Expansion, step 7
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const loginRouter = require('express').Router()
